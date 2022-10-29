@@ -1,0 +1,33 @@
+{
+    "xsappname": "fioridemo50",
+    "tenant-mode": "dedicated",
+    "description": "Security profile of called application",
+    "scopes": [
+      {
+        "name": "uaa.user",
+        "description": "UAA"
+      },
+      {
+        "name": "$XSAPPNAME.frontendscope"   
+      }
+    ],
+    "role-templates": [
+      {
+        "name": "Token_Exchange",
+        "description": "UAA",
+        "scope-references": [
+          "uaa.user"
+        ]
+      },
+      {
+        "name": "FrontendUserRole",
+        "scope-references": [   "$XSAPPNAME.frontendscope", 
+                                  "$XSAPPNAME(application,fioridemo51).backendscope"]
+          }
+      ],
+                              
+      "foreign-scope-references": ["$XSAPPNAME(application,fioridemo51).backendscope"],
+      "oauth2-configuration": {"token-validity": 5}
+
+  }
+  

@@ -1,0 +1,13 @@
+{
+    "welcomeFile": "feappdemo50",
+    "authenticationMethod": "route",
+    "routes": [     
+        {
+            "source": "^/odata/(.*)$",
+            "target": "odata/$1",
+            "destination": "core_api",
+            "authenticationType": "xsuaa",    
+            "csrfProtection": false                 
+        }
+    ]
+}

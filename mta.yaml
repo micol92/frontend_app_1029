@@ -1,0 +1,78 @@
+_schema-version: "3.2"
+ID: fioridemo50
+version: 0.0.1
+modules:
+- name: fioridemo50-app-content
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: fioridemo50-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - feappdemo50.zip
+      name: feappdemo50
+      target-path: resources/
+- name: feappdemo50
+  type: html5
+  path: feappdemo50
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: fioridemo50-approuter
+  type: approuter.nodejs
+  path: fioridemo50-approuter
+  requires:
+  - name: fioridemo50_html_repo_runtime
+  - name: uaa_fioridemo50
+  - name: fioridemo50-destination-service
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+
+resources:
+- name: fioridemo50-repo-host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-name: fioridemo50-html5-srv
+    service-plan: app-host
+- name: fioridemo50-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: fioridemo50-destination-service
+    service-plan: lite
+- name: fioridemo50_html_repo_runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+- name: uaa_fioridemo50
+  type: org.cloudfoundry.managed-service
+  parameters:
+    path: ./xs-security.json
+    service: xsuaa
+    service-name: fioridemo50-xsuaa-service
+    service-plan: application
+parameters:
+  deploy_mode: html5-repo

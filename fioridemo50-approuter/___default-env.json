@@ -1,0 +1,8 @@
+{
+    "destinations": [
+        {
+            "name": "core_api",
+            "url": "https://btp-kr-pockr-dev-demo02-srv.cfapps.ap12.hana.ondemand.com"
+        }
+    ]
+}
